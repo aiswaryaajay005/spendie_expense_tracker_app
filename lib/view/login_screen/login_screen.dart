@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spendie_money_tracker/controller/login_screen_controller.dart';
 import 'package:spendie_money_tracker/utils/global_constants.dart';
+import 'package:spendie_money_tracker/view/home_screen/home_screen.dart';
 import 'package:spendie_money_tracker/view/register_screen/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,93 +15,110 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenState = context.watch<LoginScreenController>();
+    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: GlobalConstants.bg,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Image.asset('assets/images/piggy.png', height: 100, width: 100),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Image.asset('assets/images/piggy.png', height: 100, width: 100),
 
-            Text(
-              "Spendie",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-                color: GlobalConstants.primary,
-              ),
-            ),
-            Text(
-              'SIGN IN',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: GlobalConstants.accent,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Great to see you again! Your journey awaits. Sign in to pick up right where you left off.',
-              style: TextStyle(fontSize: 14, color: GlobalConstants.text),
-            ),
-            SizedBox(height: 24),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+              Text(
+                "Spendie",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                  color: GlobalConstants.primary,
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+              Text(
+                'SIGN IN',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: GlobalConstants.accent,
                 ),
-                suffixIcon: Icon(Icons.visibility),
               ),
-            ),
-            SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: GlobalConstants.primary,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              SizedBox(height: 8),
+              Text(
+                'Great to see you again! Your journey awaits. Sign in to pick up right where you left off.',
+                style: TextStyle(fontSize: 14, color: GlobalConstants.text),
+              ),
+              SizedBox(height: 24),
+              TextFormField(
+                controller: screenState.emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {},
-                child: Text('Sign In', style: TextStyle(color: Colors.white)),
               ),
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Don't have an account? "),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
-                  },
-                  child: Text(
-                    'Create Account',
-                    style: TextStyle(
-                      color: Colors.blueGrey[300],
-                      fontWeight: FontWeight.bold,
+              SizedBox(height: 16),
+              TextFormField(
+                controller: screenState.passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  suffixIcon: Icon(Icons.visibility),
+                ),
+              ),
+              SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: GlobalConstants.primary,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                  onPressed: () {
+                    context.read<LoginScreenController>().login(
+                      context: context,
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                    // );
+                  },
+                  child: Text('Sign In', style: TextStyle(color: Colors.white)),
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Don't have an account? "),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Create Account',
+                      style: TextStyle(
+                        color: Colors.blueGrey[300],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

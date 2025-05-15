@@ -1,9 +1,28 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:spendie_money_tracker/helper/db_helper.dart';
 import 'package:spendie_money_tracker/utils/global_constants.dart';
 import 'package:spendie_money_tracker/view/add_transaction/add_transaction.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize any necessary data or state here
+
+    final User? user = DbHelper.supabase.auth.currentUser;
+    log('User ID: ${user?.id}');
+    log('User Email: ${user?.email}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(color: GlobalConstants.text, fontSize: 20),
               ),
               Text(
-                "Aiswarya Ajayakumar",
+                "Username",
                 style: TextStyle(color: GlobalConstants.text, fontSize: 25),
               ),
             ],
@@ -126,6 +145,7 @@ class HomeScreen extends StatelessWidget {
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: 10,
+                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder:
                       (context, index) => Padding(
                         padding: const EdgeInsets.all(8.0),
