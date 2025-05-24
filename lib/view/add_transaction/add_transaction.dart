@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spendie_money_tracker/controller/add_transaction_controller.dart';
 import 'package:spendie_money_tracker/utils/global_constants.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -32,13 +34,13 @@ class _AddTransactionState extends State<AddTransaction>
         title: Text(
           'Add Transaction',
           style: TextStyle(
-            color: Colors.white,
+            color: GlobalConstants.text,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         toolbarHeight: 100,
-        backgroundColor: GlobalConstants.primary,
+        backgroundColor: GlobalConstants.primary.withAlpha(90),
         centerTitle: true,
       ),
       body: Column(
@@ -68,6 +70,7 @@ class _AddTransactionState extends State<AddTransaction>
   }
 
   Widget _buildIncomeForm() {
+    final screenState = context.watch<AddTransactionController>();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -86,33 +89,58 @@ class _AddTransactionState extends State<AddTransaction>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(height: 20),
                 Text(
                   "Transaction Name",
                   style: TextStyle(color: GlobalConstants.primary),
                 ),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.incomenamecontroller,
+                  decoration: InputDecoration(),
+                ),
                 SizedBox(height: 20),
                 Text(
                   "Amount",
                   style: TextStyle(color: GlobalConstants.primary),
                 ),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.incomeamountcontroller,
+                  decoration: InputDecoration(),
+                ),
                 SizedBox(height: 20),
                 Text("Date", style: TextStyle(color: GlobalConstants.primary)),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.incomedatecontroller,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.calendar_today),
+                    border: UnderlineInputBorder(),
+                  ),
+                  onTap:
+                      () => context.read<AddTransactionController>().selectDate(
+                        context,
+                      ),
+                ),
                 SizedBox(height: 20),
 
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<AddTransactionController>().addIncome(
+                      context: context,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 14),
-                    backgroundColor: GlobalConstants.primary,
+                    backgroundColor: GlobalConstants.primary.withAlpha(90),
                   ),
                   child: Center(
                     child: Text(
                       "Save",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: GlobalConstants.text,
+                      ),
                     ),
                   ),
                 ),
@@ -125,6 +153,7 @@ class _AddTransactionState extends State<AddTransaction>
   }
 
   Widget _buildExpenseForm() {
+    final screenState = context.watch<AddTransactionController>();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -143,33 +172,58 @@ class _AddTransactionState extends State<AddTransaction>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(height: 20),
                 Text(
                   "Transaction Name",
                   style: TextStyle(color: GlobalConstants.primary),
                 ),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.expensenamecontroller,
+                  decoration: InputDecoration(),
+                ),
                 SizedBox(height: 20),
                 Text(
                   "Amount",
                   style: TextStyle(color: GlobalConstants.primary),
                 ),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.expenseamountcontroller,
+                  decoration: InputDecoration(),
+                ),
                 SizedBox(height: 20),
                 Text("Date", style: TextStyle(color: GlobalConstants.primary)),
-                TextFormField(decoration: InputDecoration()),
+                TextFormField(
+                  controller: screenState.expensedatecontroller,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.calendar_today),
+                    border: UnderlineInputBorder(),
+                  ),
+                  onTap:
+                      () => context.read<AddTransactionController>().selectDate(
+                        context,
+                      ),
+                ),
                 SizedBox(height: 20),
 
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<AddTransactionController>().addExpense(
+                      context: context,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 14),
-                    backgroundColor: GlobalConstants.primary,
+                    backgroundColor: GlobalConstants.primary.withAlpha(90),
                   ),
                   child: Center(
                     child: Text(
                       "Save",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: GlobalConstants.text,
+                      ),
                     ),
                   ),
                 ),

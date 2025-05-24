@@ -6,6 +6,7 @@ import 'package:spendie_money_tracker/view/home_screen/home_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DbHelper {
+  static List<Map<String, dynamic>> transactionDetails = [];
   static Future<void> initSupabase() async {
     await Supabase.initialize(
       url: 'https://dzhyuvsfxdjwndeeycni.supabase.co',
@@ -81,16 +82,47 @@ class DbHelper {
     }
   }
 
-  Future<void> addTransaction({
+  static Future<void> addTransaction({
     required String? tName,
     required String? tAmount,
     required String? tDate,
-    required String? tType,
+    required int? tType,
     required var uid,
   }) async {
     try {
-      await supabase.from('tbl_transaction').insert({});
-      log('Data added successfully');
+      await supabase.from('tbl_transaction').insert({
+        'user_id': uid,
+        't_name': tName,
+        't_amount': tAmount,
+        't_date': tDate,
+        't_type': tType,
+      });
+      log('Transaction added successfully');
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  static Future<PostgrestList?> fetchTransaction() async {
+    try {
+      final data = await supabase
+          .from('tbl_transaction')
+          .select()
+          .eq('user_id', supabase.auth.currentUser!.id);
+      if (data != null) {
+        transactionDetails = List<Map<String, dynamic>>.from(data);
+        log('Transaction fetched successfully');
+      }
+      return transactionDetails;
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  static void deleteTransaction({required int id}) async {
+    try {
+      await supabase.from('tbl_transaction').delete().eq('id', id);
+      log('Transaction deleted successfully');
     } catch (e) {
       log('Error: $e');
     }

@@ -48,6 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
               "Track Smart. Spend Wise",
               style: TextStyle(color: GlobalConstants.accent),
             ),
+            SizedBox(height: 20),
+            CircularProgressIndicator(color: GlobalConstants.accent),
           ],
         ),
       ),

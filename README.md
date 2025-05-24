@@ -1,3 +1,1 @@
-# spendie_money_tracker
-
-A new Flutter project.
+Expense Tracker using Flutter, Provider and Supabase.

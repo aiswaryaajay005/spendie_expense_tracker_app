@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spendie_money_tracker/app_utils/app_utils.dart';
+import 'package:spendie_money_tracker/controller/add_transaction_controller.dart';
+import 'package:spendie_money_tracker/controller/home_screen_controller.dart';
 import 'package:spendie_money_tracker/controller/login_screen_controller.dart';
 import 'package:spendie_money_tracker/controller/register_screen_controller.dart';
 import 'package:spendie_money_tracker/helper/db_helper.dart';
@@ -14,6 +16,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => RegisterScreenController()),
         ChangeNotifierProvider(create: (context) => LoginScreenController()),
+        ChangeNotifierProvider(create: (context) => AddTransactionController()),
+        ChangeNotifierProvider(create: (context) => HomeScreenController()),
       ],
       child: MainApp(),
     ),
@@ -25,6 +29,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: SplashScreen());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+    );
   }
 }
