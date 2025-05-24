@@ -77,4 +77,19 @@ class HomeScreenController with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  DateTime selectedMonth = DateTime.now();
+
+  void setSelectedMonth(DateTime date) {
+    selectedMonth = date;
+    notifyListeners();
+  }
+
+  List<Map<String, dynamic>> get filteredTransactionsByMonth {
+    return transactionDetails.where((tx) {
+      final txDate = DateTime.parse(tx['t_date']);
+      return txDate.month == selectedMonth.month &&
+          txDate.year == selectedMonth.year;
+    }).toList();
+  }
 }
